@@ -1,7 +1,7 @@
 class ReportModel{
   int? Report_Id;
   String Report_Name;
-  bool IsActive;
+  int IsActive;
 
   ReportModel({
     this.Report_Id,
@@ -32,7 +32,7 @@ class ReportModel{
   ReportModel copyWith({
     int? Report_Id,
     String? Report_Name,
-    bool? IsActive
+    int? IsActive
   }){
     return ReportModel(
       Report_Id: Report_Id ?? this.Report_Id,

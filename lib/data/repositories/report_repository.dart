@@ -23,9 +23,95 @@ class Report_Repository{
       return ReportModel.listReportModels(result);
     }
     catch(e){
-      ref.read(responseStateProvider.notifier).state = "List Not Found. & ${e}";
+      ref.read(responseStateProvider.notifier).state = "Report List Not Found. & ${e}";
       return [];
     }
   }
 
+  Future<ReportModel> getReportById(int Report_Id) async{
+    try{
+      final result = await db.query('Report',
+          columns: ['Report_Id','Report_Name','IsActive'],
+          where: 'Report_Id = ?',
+          whereArgs: [Report_Id],
+          limit: 1
+      );
+
+      if(result.isEmpty){
+        throw Exception('Report Not Found');
+      }
+
+      return ReportModel.fromMap(result.first);
+    }
+    catch(e){
+      ref.read(responseStateProvider.notifier).state = "Report Not Found.";
+      return ReportModel(Report_Name: "", IsActive: 1);
+    }
+  }
+
+  Future<bool> Insert_Report(ReportModel model) async{
+    try{
+      final result = await db.insert('Report',model.toMap());
+
+      if(result < 0){
+        throw Exception("Report Insertion Failed.");
+      }
+
+      ref.read(responseStateProvider.notifier).state = "Report Insertion Successfully.";
+
+      return true;
+    }
+    catch(e){
+      ref.read(responseStateProvider.notifier).state = "Report Insertion Failed. ${e}";
+
+      return false;
+    }
+  }
+
+  Future<bool> Update_Report(ReportModel model,int Report_Id) async{
+    try{
+      final result1 = await getReportById(Report_Id);
+
+      model.Report_Id = model.Report_Id ?? result1.Report_Id;
+      model.Report_Name = model.Report_Name ?? result1.Report_Name;
+      model.IsActive = 1;
+
+      final result = await db.update('Report',model.toMap(),where: 'Report_Id = ?',whereArgs: [Report_Id]);
+
+      if(result < 0){
+        throw Exception("Report Updation Failed.");
+      }
+
+      ref.read(responseStateProvider.notifier).state = "Report Updation Successfully.";
+
+      return true;
+    }
+    catch(e){
+      ref.read(responseStateProvider.notifier).state = "Report Updation Failed. ${e}";
+
+      return false;
+    }
+  }
+
+  Future<bool> Delete_Report(Report_Id) async{
+    try{
+      final result = await db.rawUpdate(
+        'Update Report set IsActive = 0 where Report_Id = ?',
+        [Report_Id],
+      );
+
+      if(result < 0){
+        throw Exception("Report Deletion Failed.");
+      }
+
+      ref.read(responseStateProvider.notifier).state = "Report Deletion Successfully.";
+
+      return true;
+    }
+    catch(e){
+      ref.read(responseStateProvider.notifier).state = "Report Deletion Failed. ${e}";
+
+      return false;
+    }
+  }
 }
