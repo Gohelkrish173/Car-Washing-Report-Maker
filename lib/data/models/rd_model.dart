@@ -8,6 +8,8 @@ class RD_Model{
   int? Washing;
   String? Technician_Name;
   String? Remark;
+  String? Created_Date;
+  String? Modified_Date;
 
   RD_Model({
     this.RD_Id,
@@ -18,7 +20,9 @@ class RD_Model{
     this.Service,
     this.Washing,
     this.Technician_Name,
-    this.Remark
+    this.Remark,
+    this.Created_Date,
+    this.Modified_Date
   });
 
   // Factory Constructor use for Create DirectMethod on Object
@@ -32,7 +36,9 @@ class RD_Model{
       Service: json['Service'],
       Washing: json['Washing'],
       Technician_Name: json['Technician_Name'],
-      Remark: json['Remark']
+      Remark: json['Remark'],
+      Created_Date: json['Created_Date'],
+      Modified_Date: json['Modified_Date']
     );
   }
 
@@ -46,7 +52,9 @@ class RD_Model{
       "Service" : this.Service,
       "Washing" : this.Washing,
       "Technician_Name" : this.Technician_Name,
-      "Remark" : this.Remark
+      "Remark" : this.Remark,
+      "Created_Date" : this.Created_Date,
+      "Modified_Date" : this.Modified_Date,
     };
   }
 
@@ -64,7 +72,9 @@ class RD_Model{
     String? Service,
     int? Washing,
     String? Technician_Name,
-    String? Remark
+    String? Remark,
+    String? Created_Date,
+    String? Modified_Date
   }){
     return RD_Model(
       RD_Id: RD_Id ?? this.RD_Id,
@@ -75,7 +85,9 @@ class RD_Model{
       Service: Service ?? this.Service,
       Washing: Washing ?? this.Washing,
       Technician_Name: Technician_Name ?? this.Technician_Name,
-      Remark: Remark ?? this.Remark
+      Remark: Remark ?? this.Remark,
+      Created_Date: Created_Date ?? this.Created_Date,
+      Modified_Date: Modified_Date ?? this.Modified_Date
     );
   }
 

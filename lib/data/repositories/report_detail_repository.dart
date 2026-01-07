@@ -16,7 +16,7 @@ class Report_Detail_Repository{
   Future<List<RD_Model>> getReportDetailList(int Report_Id) async {
     try{
       final result = await db.query('Report_Detail',
-        columns: ['RD_Id','Report_Id','Reg_No','JC_No','ModalName','Service','Washing','Technician_Name','Remark'],
+        columns: ['RD_Id','Report_Id','Reg_No','JC_No','ModalName','Service','Washing','Technician_Name','Remark','Created_Date','Modified_Date'],
         where: 'Report_Id = ?',
         whereArgs: [Report_Id],
         orderBy: 'Report_Id DESC'
@@ -37,7 +37,7 @@ class Report_Detail_Repository{
   Future<RD_Model> getReportDetail(int RD_Id) async{
     try{
       final result = await db.query('Report_Detail',
-        columns: ['RD_Id','Report_Id','Reg_No','JC_No','ModalName','Service','Washing','Technician_Name','Remark'],
+        columns: ['RD_Id','Report_Id','Reg_No','JC_No','ModalName','Service','Washing','Technician_Name','Remark','Created_Date','Modified_Date'],
         where: 'RD_Id = ?',
         whereArgs: [RD_Id],
         limit: 1
@@ -57,6 +57,8 @@ class Report_Detail_Repository{
 
   Future<bool> InsertReportDetail(RD_Model model) async{
     try{
+      model.Created_Date = DateTime.now().toIso8601String().split('T').first;
+
       final result = await db.insert('Report', model.toMap());
 
       if(result < 0){
@@ -87,7 +89,8 @@ class Report_Detail_Repository{
       model.Washing = model.Washing ?? result1.Washing;
       model.Technician_Name = model.Technician_Name ?? result1.Technician_Name;
       model.Remark = model.Remark ?? result1.Remark;
-
+      model.Created_Date = model.Created_Date ?? result1.Created_Date;
+      model.Modified_Date = DateTime.now().toIso8601String().split('T').first;
       final result = await db.update('Report', model.toMap(),where: 'RD_Id = ?',whereArgs: [RD_Id]);
 
       if(result < 0){
