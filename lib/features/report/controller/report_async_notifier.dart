@@ -12,6 +12,4 @@ class ReportAsyncNotifier extends AsyncNotifier<List<ReportModel>>{
     return ref.read(reportRepositoryProvider).getAllReports();
   }
 
-
-
 }

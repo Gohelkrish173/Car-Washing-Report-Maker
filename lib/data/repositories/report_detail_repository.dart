@@ -13,12 +13,12 @@ class Report_Detail_Repository{
     required this.ref
   });
 
-  Future<List<RD_Model>> getReportDetailList(int Report_Id) async {
+  Future<List<RD_Model>> getReportDetailList(int report_Id) async {
     try{
       final result = await db.query('Report_Detail',
         columns: ['RD_Id','Report_Id','Reg_No','JC_No','ModalName','Service','Washing','Technician_Name','Remark','Created_Date','Modified_Date'],
         where: 'Report_Id = ?',
-        whereArgs: [Report_Id],
+        whereArgs: [report_Id],
         orderBy: 'Report_Id DESC'
       );
 
@@ -34,12 +34,12 @@ class Report_Detail_Repository{
     }
   }
 
-  Future<RD_Model> getReportDetail(int RD_Id) async{
+  Future<RD_Model> getReportDetail(int rd_Id) async{
     try{
       final result = await db.query('Report_Detail',
         columns: ['RD_Id','Report_Id','Reg_No','JC_No','ModalName','Service','Washing','Technician_Name','Remark','Created_Date','Modified_Date'],
         where: 'RD_Id = ?',
-        whereArgs: [RD_Id],
+        whereArgs: [rd_Id],
         limit: 1
       );
 
@@ -55,7 +55,7 @@ class Report_Detail_Repository{
     }
   }
 
-  Future<bool> InsertReportDetail(RD_Model model) async{
+  Future<bool> insertReportDetail(RD_Model model) async{
     try{
       model.Created_Date = DateTime.now().toIso8601String().split('T').first;
 
@@ -76,9 +76,9 @@ class Report_Detail_Repository{
     }
   }
 
-  Future<bool> UpdateReportDetail(RD_Model model,int RD_Id) async{
+  Future<bool> updateReportDetail(RD_Model model,int rd_Id) async{
     try{
-      final result1 = await getReportDetail(RD_Id);
+      final result1 = await getReportDetail(rd_Id);
 
       model.RD_Id = model.RD_Id ?? result1.RD_Id;
       model.Report_Id = model.Report_Id ?? result1.Report_Id;
@@ -91,7 +91,7 @@ class Report_Detail_Repository{
       model.Remark = model.Remark ?? result1.Remark;
       model.Created_Date = model.Created_Date ?? result1.Created_Date;
       model.Modified_Date = DateTime.now().toIso8601String().split('T').first;
-      final result = await db.update('Report', model.toMap(),where: 'RD_Id = ?',whereArgs: [RD_Id]);
+      final result = await db.update('Report', model.toMap(),where: 'RD_Id = ?',whereArgs: [rd_Id]);
 
       if(result < 0){
         throw Exception("Report Detail Updation Failed.");
@@ -108,9 +108,9 @@ class Report_Detail_Repository{
     }
   }
 
-  Future<bool> DeleteReportDetail(RD_Id) async{
+  Future<bool> deleteReportDetail(int rd_Id) async{
     try{
-      final result = await db.delete('Report_Detail',where: 'RD_ID = ?',whereArgs: [RD_Id]);
+      final result = await db.delete('Report_Detail',where: 'RD_ID = ?',whereArgs: [rd_Id]);
 
       if(result < 0){
         throw Exception("Report Detail Deletion Failed");

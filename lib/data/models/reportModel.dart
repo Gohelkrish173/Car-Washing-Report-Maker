@@ -1,14 +1,14 @@
 class ReportModel{
   int? Report_Id;
   String Report_Name;
-  int IsActive;
+  int? IsActive;
   String? Created_Date;
   String? Modifier_Date;
 
   ReportModel({
     this.Report_Id,
     required this.Report_Name,
-    required this.IsActive,
+    this.IsActive,
     this.Created_Date,
     this.Modifier_Date
   });

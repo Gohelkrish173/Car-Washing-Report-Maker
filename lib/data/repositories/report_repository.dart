@@ -28,12 +28,12 @@ class Report_Repository{
     }
   }
 
-  Future<ReportModel> getReportById(int Report_Id) async{
+  Future<ReportModel> getReportById(int report_Id) async{
     try{
       final result = await db.query('Report',
           columns: ['Report_Id','Report_Name','IsActive','Created_Date','Modified_Date'],
           where: 'Report_Id = ?',
-          whereArgs: [Report_Id],
+          whereArgs: [report_Id],
           limit: 1
       );
 
@@ -49,7 +49,7 @@ class Report_Repository{
     }
   }
 
-  Future<bool> Insert_Report(ReportModel model) async{
+  Future<bool> insert_Report(ReportModel model) async{
     try{
       model.IsActive = 1;
       model.Created_Date = DateTime.now().toIso8601String().split('T').first;
@@ -71,9 +71,9 @@ class Report_Repository{
     }
   }
 
-  Future<bool> Update_Report(ReportModel model,int Report_Id) async{
+  Future<bool> update_Report(ReportModel model,int report_Id) async{
     try{
-      final result1 = await getReportById(Report_Id);
+      final result1 = await getReportById(report_Id);
 
       model.Report_Id = model.Report_Id ?? result1.Report_Id;
       model.Report_Name = model.Report_Name ?? result1.Report_Name;
@@ -81,7 +81,7 @@ class Report_Repository{
       model.Created_Date = model.Created_Date ?? result1.Created_Date;
       model.Modifier_Date = DateTime.now().toIso8601String().split('T').first;
 
-      final result = await db.update('Report',model.toMap(),where: 'Report_Id = ?',whereArgs: [Report_Id]);
+      final result = await db.update('Report',model.toMap(),where: 'Report_Id = ?',whereArgs: [report_Id]);
 
       if(result < 0){
         throw Exception("Report Updation Failed.");
@@ -98,13 +98,13 @@ class Report_Repository{
     }
   }
 
-  Future<bool> Delete_Report(Report_Id) async{
+  Future<bool> delete_Report(int report_Id) async{
     try{
       String date = DateTime.now().toIso8601String().split('T').first;
 
       final result = await db.rawUpdate(
         'Update Report set IsActive = 0,Modified_Date = ${date} where Report_Id = ?',
-        [Report_Id],
+        [report_Id],
       );
 
       if(result < 0){
