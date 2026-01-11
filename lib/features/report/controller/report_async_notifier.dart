@@ -15,10 +15,15 @@ class ReportAsyncNotifier extends AsyncNotifier<List<ReportModel>>{
 
   @override
   FutureOr<List<ReportModel>> build() async{
+    return refresh_List();
+  }
+
+  Future<List<ReportModel>> refresh_List() async {
     _repo = ref.read(reportRepositoryProvider);
 
     return await _repo.getAllReports();
   }
+
 
   // update State after successfull Insert (called after successfull insert)
   void insert_report_in_async(ReportModel report){
